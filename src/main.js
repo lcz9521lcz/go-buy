@@ -12,8 +12,11 @@ Vue.use(ElementUI)
 import './styles/common.css'
 
 // 导入axios
-// import axios from 'axios'
-// Vue.use(axios)
+import axios from 'axios'
+// 配置全局路径
+axios.defaults.baseURL = 'http://litc.pro:9999/v1/'
+// 在vue原型上挂载axios
+Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 

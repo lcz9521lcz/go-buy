@@ -23,7 +23,18 @@ export default {
     };
   },
   methods: {
-    login() {}
+    login() {
+      console.log("执行登录了");
+      console.log(this.username,this.password)
+      this.$axios
+        .post("/users/login", {
+          username: this.username,
+          password: this.password
+        })
+        .then(result => {
+          console.log(result);
+        });
+    }
   }
 };
 </script>
