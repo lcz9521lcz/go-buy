@@ -8,7 +8,7 @@
       <el-form-item label="密码">
         <el-input type="password" v-model="password"></el-input>
       </el-form-item>
-      <el-button type="primary" center="true" @click="login">立即创建</el-button>
+      <el-button type="primary" class="btn" @click="login">登录</el-button>
     </el-form>
   </div>
 </template>
@@ -24,22 +24,39 @@ export default {
   },
   methods: {
     login() {
-      console.log("执行登录了");
-      console.log(this.username,this.password)
+      if (!this.username.trim() || !this.password.trim())
+        return this.$message({
+          showClose: true,
+          message: "请输入用户名和密码",
+          type: "warning"
+        });
       this.$axios
         .post("/users/login", {
           username: this.username,
           password: this.password
         })
         .then(result => {
-          console.log(result);
+          // console.log(result);
+          this.$message({
+            showClose: true,
+            message: result.data.succMsg,
+            type: "success"
+          });
+          this.$router.push('/home')
+        })
+        .catch(err => {
+          this.$message({
+            showClose: true,
+            message: err.response.data.errMsg,
+            type: "error"
+          });
         });
     }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .login-container {
   width: 500px;
   margin: 100px auto;
@@ -52,6 +69,10 @@ export default {
     margin: 22px 0;
     font-size: 26px;
     font-weight: 700;
+  }
+  .btn {
+    display: block;
+    margin: 0 auto;
   }
 }
 </style>
