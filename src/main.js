@@ -18,6 +18,15 @@ axios.defaults.baseURL = 'http://litc.pro:9999/v1/'
 // 在vue原型上挂载axios
 Vue.prototype.$axios = axios
 
+// 路由的导航守卫---判断用户是否登录如果没有进行拦截
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem('token')
+  if (!token && to.path !== '/login') {
+    return next('/login')
+  }
+  next()
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

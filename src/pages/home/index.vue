@@ -1,5 +1,7 @@
 <template>
   <div class="home-container">
+    <el-button type="success">登录</el-button>
+    <el-button type="warning" @click="logout">退出</el-button>
     <el-row class="tac">
       <el-col :span="4">
         <el-menu default-active="1-1" class="el-menu-vertical-demo">
@@ -81,6 +83,10 @@ export default {
         .catch(err => {
           console.dir(err);
         });
+    },
+    logout() {
+      localStorage.removeItem("token");
+      this.$router.push("/login");
     }
   }
 };
