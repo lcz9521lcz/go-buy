@@ -38,16 +38,17 @@
           </el-submenu>
         </el-menu>
       </el-col>
-      <el-col :span="20">
-        <el-table :data="tableData3" style="width: 100%">
-          <el-table-column prop="date" label="日期" width="150"></el-table-column>
+      <el-col :span="20" class="info">
+        <el-table :data="receiverInfo" style="width: 100%">
           <el-table-column label="配送信息">
-            <el-table-column prop="name" label="姓名" width="120"></el-table-column>
+            <el-table-column prop="receiver_name" label="姓名" width="120"></el-table-column>
+            <el-table-column prop="mobile" label="手机" width="120"></el-table-column>
             <el-table-column label="地址">
               <el-table-column prop="province" label="省份" width="120"></el-table-column>
               <el-table-column prop="city" label="市区" width="120"></el-table-column>
-              <el-table-column prop="address" label="地址" width="300"></el-table-column>
-              <el-table-column prop="zip" label="邮编" width="120"></el-table-column>
+              <el-table-column prop="area" label="区/镇" width="120"></el-table-column>
+              <el-table-column prop="detailed_address" label="详细地址" width="300"></el-table-column>
+              <el-table-column prop="postcode" label="邮编" width="120"></el-table-column>
             </el-table-column>
           </el-table-column>
         </el-table>
@@ -60,65 +61,27 @@
 export default {
   data() {
     return {
-      tableData3: [
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-08",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-06",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          date: "2016-05-07",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        }
-      ]
+      receiverInfo: []
     };
+  },
+  created() {
+    this.getReceiverAddress();
+  },
+  methods: {
+    getReceiverAddress() {
+      let token = localStorage.getItem("token");
+      this.$axios
+        .get("users/getReceiverAddress", {
+          headers: { Authorization: token }
+        })
+        .then(result => {
+          // console.log(result.data);
+          this.receiverInfo = result.data.data;
+        })
+        .catch(err => {
+          console.dir(err);
+        });
+    }
   }
 };
 </script>
@@ -127,6 +90,9 @@ export default {
 .home-container {
   .el-menu {
     border: 0;
+  }
+  .info {
+    padding: 60px;
   }
 }
 </style>

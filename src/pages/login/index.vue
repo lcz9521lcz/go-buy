@@ -37,12 +37,13 @@ export default {
         })
         .then(result => {
           // console.log(result);
+          localStorage.setItem("token", result.data.data.token);
           this.$message({
             showClose: true,
             message: result.data.succMsg,
             type: "success"
           });
-          this.$router.push('/home')
+          this.$router.push("/home");
         })
         .catch(err => {
           this.$message({
