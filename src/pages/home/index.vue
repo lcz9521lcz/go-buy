@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <el-button type="success">登录</el-button>
+    <el-button type="success">{{ userInfo.nickname }}</el-button>
     <el-button type="warning" @click="logout">退出</el-button>
     <el-row class="tac">
       <el-col :span="4">
@@ -63,19 +63,19 @@
 export default {
   data() {
     return {
-      receiverInfo: []
+      receiverInfo: [],
+      userInfo: {}
     };
   },
   created() {
     this.getReceiverAddress();
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo") || "{}");
   },
   methods: {
     getReceiverAddress() {
       let token = localStorage.getItem("token");
       this.$axios
-        .get("users/getReceiverAddress", {
-          headers: { Authorization: token }
-        })
+        .get("users/getReceiverAddress")
         .then(result => {
           // console.log(result.data);
           this.receiverInfo = result.data.data;
@@ -86,6 +86,7 @@ export default {
     },
     logout() {
       localStorage.removeItem("token");
+      localStorage.removeItem("userInfo");
       this.$router.push("/login");
     }
   }

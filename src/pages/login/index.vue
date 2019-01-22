@@ -6,7 +6,7 @@
         <el-input v-model="username"></el-input>
       </el-form-item>
       <el-form-item label="密码">
-        <el-input type="password" v-model="password"></el-input>
+        <el-input type="password" v-model="password" @keydown.native.enter="login"></el-input>
       </el-form-item>
       <el-button type="primary" class="btn" @click="login">登录</el-button>
     </el-form>
@@ -38,6 +38,7 @@ export default {
         .then(result => {
           // console.log(result);
           localStorage.setItem("token", result.data.data.token);
+          localStorage.setItem("userInfo", JSON.stringify(result.data.data));
           this.$message({
             showClose: true,
             message: result.data.succMsg,
